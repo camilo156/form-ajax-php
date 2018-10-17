@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> simple SPA  </title>
+</head>
+<body>
+    <button onclick="listar()"> listar alumnos </button><br>
+    <button onclick="insertar()"> nuevo alumno </button><br>
+    <input type="text" id="id"> 
+    <input type="text" id="nombre">
+    <input type="text" id="apellidos">
+    <input type="text" id="gitlab">
+    <input type="text" id="fecha">
+    <button onclick="actualizar()"> actualizar </button>
+    <button onclick="borrar()"> borrar </button>
+</body>
+</html>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous">
+</script>
+<script>
+
+
+function listar(){
+  $.ajax('server.php',{     
+    type: 'post',
+    data: 'accion=listar',
+    success: (d) => { console.log(d) } 
+  });             
+}   
+
+function insertar(){
+   datosInsertados = { nombre: $('#nombre').val(), apellidos: $('#apellidos').val(), gitlab: $('#gitlab').val(), fecha: $('#fecha').val()} 
+  $.ajax('server.php',{    
+    type: 'post',   
+    data: 'accion=insertar&datos=' + JSON.stringify(datosInsertados),
+    success: (d) => { console.log(d) },
+    error: (e) => console.log(e)
+  });  
+}
+
+function actualizar(){
+  datosModificados = { id: $('#id').val(), nombre: $('#nombre').val(), apellidos: $('#apellidos').val(), gitlab: $('#gitlab').val(), fecha: $('#fecha').val() }
+  
+  $.ajax('server.php',{    
+    type: 'post',   
+    data: 'accion=actualizar&datos=' + JSON.stringify(datosModificados),
+    success: (d) => { console.log(d) },
+    error: (e) => console.log(e)
+  });  
+}
+
+function borrar(){
+  datos = { id: $('#id').val() }
+  $.ajax('server.php',{    
+    type: 'post',   
+    data: 'accion=borrar&datos=' + JSON.stringify(datos),
+    success: (d) => { console.log(d) },
+    error: (e) => console.log(e)
+  });  
+}
+
+</script>
